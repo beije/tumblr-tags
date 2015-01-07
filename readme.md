@@ -7,7 +7,7 @@ A small script that fetches all the tags for a tumblr-blog. The script doesn't d
 ## How to use
 
 Include the script ```src/TumblrTags.js```, once the document is ready you can fetch the tags for a tumblr user.
-https://rawgit.com/beije/tumblr-tags/master/example/index.html
+
 ```sh
 // Create a TumblrTags object, set the username of the blog.
 var tagFetcher = new window.TumblrTags(username);
@@ -26,4 +26,4 @@ function(tags){
 tagFetcher.load();
 ```
 
-[1]: https://rawgit.com/beije/tumblr-tags/master/example/index.html
+[1]: http://rawgit.com/beije/tumblr-tags/master/example/index.html
