@@ -13,13 +13,13 @@ Include the script ```src/tumblrTags.js```. Once the document is ready you can f
 var tagFetcher = new window.TumblrTags(username);
 
 // Hook in to the ready event.
-// The anonomous function will be fired when all the tags are fetched.
+// The anonymous function will be fired when all the tags are fetched.
 tagFetcher.on(
-'ready',
-function(tags){
-    // Do something with the tags
-    console.log(tags);
-}
+	'ready',
+	function(tags){
+		// Do something with the tags
+		console.log(tags);
+	}
 );
 
 // Load posts
