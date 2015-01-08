@@ -8,7 +8,7 @@ A small script that fetches all the tags for a tumblr-blog. The script doesn't d
 
 Include the script ```src/tumblrTags.js```. Once the document is ready you can fetch the tags for a tumblr user.
 
-```sh
+```javascript
 // Create a TumblrTags object, set the username of the blog.
 var tagFetcher = new window.TumblrTags(username);
 
