@@ -13,6 +13,11 @@
         this.posts = [];
         this.tags = {};
         this.scriptCounter = 0;
+        this.processed = 0;
+        this.enqueued = 0;
+        this.batchInterval = false;
+        this.batchSize = 7;
+        this.batchTimeoutInMs = 2000;
 
         /**
         * Initialize the tag fetcher.
@@ -53,13 +58,17 @@
         */
         this.handleItems = function(data) {
             this.postOffset += data.posts.length;
-
+            this.processed++;
+            
             if(this.totalItems === -1) {
                 this.totalItems = data['posts-total'];
-                var pages = Math.ceil(this.totalItems / this.postsPerPage);
-                for(var i = 1; i < pages; i++) {
-                    this.enqueueScript(this.postsPerPage, i*this.postsPerPage);
-                }
+            }
+
+            if ((this.postOffset < this.totalItems) && this.processed == this.enqueued && this.batchInterval == false) {
+                this.batchInterval = setTimeout(
+                    this.runBatch.bind(this),
+                    this.batchTimeoutInMs
+                )
             }
 
             this.posts = this.posts.concat(data.posts);
@@ -70,6 +79,25 @@
                 this.executeCallback('ready', [this.getTags()]);
             }
         };
+
+        /**
+        * Runs a batch of requests
+        *
+        * @return void.
+        */
+        this.runBatch = function() {
+            var pages = Math.ceil(this.totalItems / this.postsPerPage);
+            var start = this.processed;
+            var end = this.processed + this.batchSize;
+            
+            end = (end*this.postsPerPage > this.totalItems ? Math.ceil(this.totalItems/this.postsPerPage) : end);
+
+            for(var i = start; i < end; i++) {
+                this.enqueueScript(this.postsPerPage, i*this.postsPerPage);
+            }
+
+            this.batchInterval = false;
+        }
 
         /**
         * Removes all script tags added by this script.
@@ -150,6 +178,8 @@
         this.enqueueScript = function(limit, offset) {
             limit = limit || this.postsPerPage;
             offset = offset || this.postOffset;
+            
+            this.enqueued++;
 
             var id = this.uniqueId + '-' + this.scriptCounter;
             var script = document.createElement('script');
