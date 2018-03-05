@@ -184,7 +184,7 @@
             var id = this.uniqueId + '-' + this.scriptCounter;
             var script = document.createElement('script');
             script.id = id;
-            script.src = 'http://' + this.username + '.tumblr.com/api/read/json?callback=' + this.uniqueId + '&num=' + limit + '&start=' + offset;
+            script.src = '//' + this.username + '.tumblr.com/api/read/json?callback=' + this.uniqueId + '&num=' + limit + '&start=' + offset;
 
             document.body.appendChild(script);
         };
